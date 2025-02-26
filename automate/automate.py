@@ -2,7 +2,7 @@ import os
 import subprocess
 
 # Configuration
-REPO_PATH = "./application/"  # Change this to your Flutter project path
+REPO_PATH = "../automate/"  # Change this to your Flutter project path
 BRANCH = "main"  # Change this to your branch name
 COMMIT_MESSAGE = "Automated commit: Updated Flutter app project file only"
 
