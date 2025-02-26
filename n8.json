@@ -1,0 +1,81 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "interval": "1d"
+        },
+        "name": "Daily Trigger",
+        "type": "n8n-nodes-base.cron",
+        "typeVersion": 1,
+        "position": [200, 300]
+      },
+      {
+        "parameters": {
+          "model": "gpt-4",
+          "prompt": "Generate a daily Flutter development tip, news, or best practice within 280 characters.",
+          "temperature": 0.7
+        },
+        "name": "Generate AI Post",
+        "type": "n8n-nodes-base.openai",
+        "typeVersion": 1,
+        "position": [400, 300]
+      },
+      {
+        "parameters": {
+          "text": "{{$node[\"Generate AI Post\"].json[\"text\"]}} #Flutter #MobileDev #AI #Automation"
+        },
+        "name": "Format Post",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [600, 300]
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "resource": "post",
+          "operation": "create",
+          "text": "{{$node[\"Format Post\"].json[\"text\"]}}"
+        },
+        "name": "Post to LinkedIn",
+        "type": "n8n-nodes-base.linkedin",
+        "typeVersion": 1,
+        "position": [800, 300]
+      }
+    ],
+    "connections": {
+      "Daily Trigger": {
+        "main": [
+          [
+            {
+              "node": "Generate AI Post",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate AI Post": {
+        "main": [
+          [
+            {
+              "node": "Format Post",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format Post": {
+        "main": [
+          [
+            {
+              "node": "Post to LinkedIn",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    }
+  }
+  
